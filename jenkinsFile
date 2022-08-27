@@ -1,0 +1,38 @@
+pipeline {
+
+  agent any
+
+  environment {
+    DOCKERHUB_TOKEN = credentials('DockerHub')
+  }
+
+  stages {
+    stage('Get code'){
+      steps {
+        checkout scm
+      }
+    }
+    stage('Docker build image'){
+      steps {
+        sh 'docker build -t vvk0701/jenkins_web_app:latest ./SL-Project2'
+      }
+    }
+    stage('Docker push image to DockerHub'){
+      steps {
+        sh 'echo $DOCKERHUB_TOKEN | docker login --username vvk0701 --password-stdin'
+        sh 'docker push vvk0701/jenkins_web_app:latest'
+        sh 'docker logout'
+      }
+    }
+    stage('Docker remove container from previous build if it runs') {
+      steps {
+        sh 'docker rm -f jenkins_web_app'
+      }
+    }
+    stage('Docker run named container from DockerHub latest image'){
+      steps {
+        sh 'docker run -d -p 80:8080 --name jenkins_web_app vvk0701/jenkins_web_app:latest'
+      }
+    }
+  }
+}
