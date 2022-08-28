@@ -2,7 +2,7 @@
   "name": "docker_web_app",
   "version": "1.0.0",
   "description": "Node.js on Docker",
-  "author": "Mike Stromberg <mike@example.com>",
+  "author": "Vivek kumar>",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
