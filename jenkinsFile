@@ -14,19 +14,19 @@ pipeline {
     }
     stage('Docker build image'){
       steps {
-        sh 'docker build -t vvk0701/jenkins_web_app:latest ./SL-Project2'
+        sh 'docker build -t vvk0701/mywebapp:latest ./SL-Project2'
       }
     }
     stage('Docker push image to DockerHub'){
       steps {
         sh 'echo $DOCKERHUB_TOKEN | docker login --username vvk0701 --password-stdin'
-        sh 'docker push vvk0701/jenkins_web_app:latest'
+        sh 'docker push vvk0701/mywebapp:latest'
         sh 'docker logout'
       }
     }
     stage('Docker remove container from previous build if it runs') {
       steps {
-        sh 'docker rm -f jenkins_web_app'
+        sh 'docker rm -f mywebapp'
       }
     }
     stage('Docker run named container from DockerHub latest image'){
